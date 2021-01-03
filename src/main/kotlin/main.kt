@@ -8,41 +8,47 @@ import java.io.File
 import java.io.FileOutputStream
 import java.nio.file.Paths
 
-
 fun getStory(
     path: String,
     dst: String,
     storyListChaptersSelector: String? = KimetsuNoYaibaSelector.STORY_LIST_CHAPTERS,
+    chapterListPageSelector: String? = KimetsuNoYaibaSelector.CHAPTER_LIST_PAGES,
+    chapterListPageSelectorBackup: String? = KimetsuNoYaibaSelector.CHAPTER_LIST_PAGES_BACK_UP,
+    storyName: String = KimetsuNoYaibaSelector.STORY_NAME,
     skipDownload: Boolean = false,
     from: Int = 0,
     limit: Int = -1,
 ) {
     val doc = Jsoup.connect(path).get()
+    println("Getting story $storyName ...")
     doc.select(storyListChaptersSelector).map { aTag ->
         aTag.attr("href")
     }.reversed().filterIndexed { index, _ ->
         index >= from && (if (limit < 0) true else index < from + limit)
     }.map { chapterPath ->
         val chapterName = getChapterNameFromPath(chapterPath)
+        print("Getting chapter $chapterName ... ")
         var imageUrls = getChapter(
             path = "${HamTruyenTranhNetConstants.HOST_URL}/$chapterPath",
             dst = dst,
-            chapterListPageSelector = KimetsuNoYaibaSelector.CHAPTER_LIST_PAGES,
+            chapterListPageSelector = chapterListPageSelector,
             skipDownload = skipDownload
         )
         if (imageUrls.isNullOrEmpty()) {
             imageUrls = getChapter(
                 path = "${HamTruyenTranhNetConstants.HOST_URL}/$chapterPath",
                 dst = dst,
-                chapterListPageSelector = KimetsuNoYaibaSelector.CHAPTER_LIST_PAGES_BACK_UP,
+                chapterListPageSelector = chapterListPageSelectorBackup,
                 skipDownload = skipDownload
             )
         }
+        println("Done")
         chapterName to imageUrls
     }.map { pair ->
         val (chapterName, imageUrls) = pair
-        createPdfByLib(imageUrls, pdfName = "${KimetsuNoYaibaSelector.STORY_NAME}-$chapterName.pdf")
+        createPdfByLib(imageUrls, pdfName = "${storyName}-$chapterName.pdf")
     }
+    println("Finished story $storyName from $from and got $limit chapter")
 }
 
 fun getChapter(
@@ -124,22 +130,25 @@ val pdf by lazy {
 }
 
 fun createPdfByLib(lstImages: List<String>, pdfName: String) {
-
+    print("Wrapping image urls and creating $pdfName file ... ")
     val imageUrls = lstImages.joinToString(separator = "") { imageUrl ->
         "<img style=\"width:100%; max-height:960px;\" src=\"$imageUrl\" /><br/>"
     }
-
     val htmlString = "<html><body>${imageUrls}</body></html>"
-
     val outputFile = Paths.get(pdfName).toFile()
     pdf.convert(input = htmlString,output = outputFile) // will always return null if output is redirected
+    println("Done")
 }
 
 fun main(args: Array<String>) {
+    println(pdf.toString())
     getStory(
         path = "http://www.hamtruyentranh.net/truyen/kimetsu-no-yaiba-1221.html",
         dst = "./imgs/${KimetsuNoYaibaSelector.STORY_NAME}",
         storyListChaptersSelector = KimetsuNoYaibaSelector.STORY_LIST_CHAPTERS,
+        chapterListPageSelector = KimetsuNoYaibaSelector.CHAPTER_LIST_PAGES,
+        chapterListPageSelectorBackup = KimetsuNoYaibaSelector.CHAPTER_LIST_PAGES_BACK_UP,
+        storyName = KimetsuNoYaibaSelector.STORY_NAME,
         skipDownload = true,
         from = 0,
         limit = 2
