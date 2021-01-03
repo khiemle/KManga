@@ -142,15 +142,28 @@ fun createPdfByLib(lstImages: List<String>, pdfName: String) {
 
 fun main(args: Array<String>) {
     println(pdf.toString())
+//    getStory(
+//        path = KimetsuNoYaibaSelector.STORY_PATH,
+//        dst = KimetsuNoYaibaSelector.STORY_NAME,
+//        storyListChaptersSelector = KimetsuNoYaibaSelector.STORY_LIST_CHAPTERS,
+//        chapterListPageSelector = KimetsuNoYaibaSelector.CHAPTER_LIST_PAGES,
+//        chapterListPageSelectorBackup = KimetsuNoYaibaSelector.CHAPTER_LIST_PAGES_BACK_UP,
+//        storyName = KimetsuNoYaibaSelector.STORY_NAME,
+//        skipDownload = true,
+//        from = 0,
+//        limit = 2
+//    )
+
     getStory(
-        path = "http://www.hamtruyentranh.net/truyen/kimetsu-no-yaiba-1221.html",
-        dst = "./imgs/${KimetsuNoYaibaSelector.STORY_NAME}",
-        storyListChaptersSelector = KimetsuNoYaibaSelector.STORY_LIST_CHAPTERS,
-        chapterListPageSelector = KimetsuNoYaibaSelector.CHAPTER_LIST_PAGES,
-        chapterListPageSelectorBackup = KimetsuNoYaibaSelector.CHAPTER_LIST_PAGES_BACK_UP,
-        storyName = KimetsuNoYaibaSelector.STORY_NAME,
+        path = DragonballSelector.STORY_PATH,
+        dst = DragonballSelector.STORY_NAME,
+        storyListChaptersSelector = DragonballSelector.STORY_LIST_CHAPTERS,
+        chapterListPageSelector = DragonballSelector.CHAPTER_LIST_PAGES,
+        chapterListPageSelectorBackup = DragonballSelector.CHAPTER_LIST_PAGES_BACK_UP,
+        storyName = DragonballSelector.STORY_NAME,
         skipDownload = true,
         from = 0,
         limit = 2
     )
+
 }
