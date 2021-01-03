@@ -148,28 +148,43 @@ fun main(args: Array<String>) {
     println("Notice, please install wkhtmltopdf first if it haven't installed yet:")
     println("brew install wkhtmltopdf --cask")
     println("+-----------------------------------------+")
-    getStory(
-        path = KimetsuNoYaibaSelector.STORY_PATH,
-        dst = KimetsuNoYaibaSelector.STORY_NAME,
-        storyListChaptersSelector = KimetsuNoYaibaSelector.STORY_LIST_CHAPTERS,
-        chapterListPageSelector = KimetsuNoYaibaSelector.CHAPTER_LIST_PAGES,
-        chapterListPageSelectorBackup = KimetsuNoYaibaSelector.CHAPTER_LIST_PAGES_BACK_UP,
-        storyName = KimetsuNoYaibaSelector.STORY_NAME,
-        skipDownload = true,
-        from = 0,
-        limit = 2
-    )
 
-//    getStory(
-//        path = DragonballSelector.STORY_PATH,
-//        dst = DragonballSelector.STORY_NAME,
-//        storyListChaptersSelector = DragonballSelector.STORY_LIST_CHAPTERS,
-//        chapterListPageSelector = DragonballSelector.CHAPTER_LIST_PAGES,
-//        chapterListPageSelectorBackup = DragonballSelector.CHAPTER_LIST_PAGES_BACK_UP,
-//        storyName = DragonballSelector.STORY_NAME,
-//        skipDownload = true,
-//        from = 0,
-//        limit = 2
-//    )
+    var selected: Int? = 0
+    do {
+        println("0 - Exit")
+        println("1 - ${KimetsuNoYaibaSelector.STORY_NAME}")
+        println("2 - ${DragonballSelector.STORY_NAME}")
+        selected =  readLine()?.toIntOrNull() ?: 0
+        if (selected == 0) continue
+        print("From chapter index = ")
+        val from = readLine()?.toIntOrNull() ?: continue
+        print("How many chapter = ")
+        val limit = readLine()?.toIntOrNull() ?: continue
+        if (selected == 1) {
+            getStory(
+                path = KimetsuNoYaibaSelector.STORY_PATH,
+                dst = KimetsuNoYaibaSelector.STORY_NAME,
+                storyListChaptersSelector = KimetsuNoYaibaSelector.STORY_LIST_CHAPTERS,
+                chapterListPageSelector = KimetsuNoYaibaSelector.CHAPTER_LIST_PAGES,
+                chapterListPageSelectorBackup = KimetsuNoYaibaSelector.CHAPTER_LIST_PAGES_BACK_UP,
+                storyName = KimetsuNoYaibaSelector.STORY_NAME,
+                skipDownload = true,
+                from = from,
+                limit = limit
+            )
+        } else if (selected == 2) {
+            getStory(
+                path = DragonballSelector.STORY_PATH,
+                dst = DragonballSelector.STORY_NAME,
+                storyListChaptersSelector = DragonballSelector.STORY_LIST_CHAPTERS,
+                chapterListPageSelector = DragonballSelector.CHAPTER_LIST_PAGES,
+                chapterListPageSelectorBackup = DragonballSelector.CHAPTER_LIST_PAGES_BACK_UP,
+                storyName = DragonballSelector.STORY_NAME,
+                skipDownload = true,
+                from = from,
+                limit = limit
+            )
 
+        }
+    } while (selected != 0)
 }
