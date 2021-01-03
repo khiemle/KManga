@@ -9,12 +9,31 @@ import java.io.FileOutputStream
 import java.nio.file.Paths
 
 fun getStory(
+    selector: StorySelector,
+    skipDownload: Boolean = false,
+    from: Int = 0,
+    limit: Int = -1,
+) {
+    getStory(
+        path = selector.storyPath,
+        dst = selector.storyName,
+        storyListChaptersSelector = selector.storyListChapters,
+        chapterListPageSelector = selector.chapterListPages,
+        chapterListPageSelectorBackup = selector.chapterListPagesBackUp,
+        storyName = selector.storyName,
+        skipDownload = skipDownload,
+        from = from,
+        limit = limit
+    )
+}
+
+fun getStory(
     path: String,
     dst: String,
-    storyListChaptersSelector: String? = KimetsuNoYaibaSelector.STORY_LIST_CHAPTERS,
-    chapterListPageSelector: String? = KimetsuNoYaibaSelector.CHAPTER_LIST_PAGES,
-    chapterListPageSelectorBackup: String? = KimetsuNoYaibaSelector.CHAPTER_LIST_PAGES_BACK_UP,
-    storyName: String = KimetsuNoYaibaSelector.STORY_NAME,
+    storyListChaptersSelector: String? = KimetsuNoYaibaSelector.storyListChapters,
+    chapterListPageSelector: String? = KimetsuNoYaibaSelector.chapterListPages,
+    chapterListPageSelectorBackup: String? = KimetsuNoYaibaSelector.chapterListPagesBackUp,
+    storyName: String = KimetsuNoYaibaSelector.storyName,
     skipDownload: Boolean = false,
     from: Int = 0,
     limit: Int = -1,
@@ -54,7 +73,7 @@ fun getStory(
 fun getChapter(
     path: String,
     dst: String,
-    chapterListPageSelector: String? = KimetsuNoYaibaSelector.CHAPTER_LIST_PAGES,
+    chapterListPageSelector: String? = KimetsuNoYaibaSelector.chapterListPages,
     skipDownload: Boolean = false
 ): List<String> {
     val chapterDir = "$dst/${getChapterNameFromPath(path)}"
@@ -136,7 +155,7 @@ fun createPdfByLib(lstImages: List<String>, pdfName: String) {
     }
     val htmlString = "<html><body>${imageUrls}</body></html>"
     val outputFile = Paths.get(pdfName).toFile()
-    pdf.convert(input = htmlString,output = outputFile) // will always return null if output is redirected
+    pdf.convert(input = htmlString, output = outputFile) // will always return null if output is redirected
     println("Done")
 }
 
@@ -152,39 +171,25 @@ fun main(args: Array<String>) {
     var selected: Int? = 0
     do {
         println("0 - Exit")
-        println("1 - ${KimetsuNoYaibaSelector.STORY_NAME}")
-        println("2 - ${DragonballSelector.STORY_NAME}")
-        selected =  readLine()?.toIntOrNull() ?: 0
+        println("1 - ${KimetsuNoYaibaSelector.storyName}")
+        println("2 - ${DragonballSelector.storyName}")
+        selected = readLine()?.toIntOrNull() ?: 0
         if (selected == 0) continue
         print("From chapter index = ")
         val from = readLine()?.toIntOrNull() ?: continue
         print("How many chapter = ")
         val limit = readLine()?.toIntOrNull() ?: continue
-        if (selected == 1) {
-            getStory(
-                path = KimetsuNoYaibaSelector.STORY_PATH,
-                dst = KimetsuNoYaibaSelector.STORY_NAME,
-                storyListChaptersSelector = KimetsuNoYaibaSelector.STORY_LIST_CHAPTERS,
-                chapterListPageSelector = KimetsuNoYaibaSelector.CHAPTER_LIST_PAGES,
-                chapterListPageSelectorBackup = KimetsuNoYaibaSelector.CHAPTER_LIST_PAGES_BACK_UP,
-                storyName = KimetsuNoYaibaSelector.STORY_NAME,
-                skipDownload = true,
-                from = from,
-                limit = limit
-            )
-        } else if (selected == 2) {
-            getStory(
-                path = DragonballSelector.STORY_PATH,
-                dst = DragonballSelector.STORY_NAME,
-                storyListChaptersSelector = DragonballSelector.STORY_LIST_CHAPTERS,
-                chapterListPageSelector = DragonballSelector.CHAPTER_LIST_PAGES,
-                chapterListPageSelectorBackup = DragonballSelector.CHAPTER_LIST_PAGES_BACK_UP,
-                storyName = DragonballSelector.STORY_NAME,
-                skipDownload = true,
-                from = from,
-                limit = limit
-            )
-
+        val selector = when (selected) {
+            1 -> KimetsuNoYaibaSelector
+            2 -> DragonballSelector
+            else -> null
         }
+        selector ?: continue
+        getStory(
+            selector = selector,
+            skipDownload = true,
+            from = from,
+            limit = limit
+        )
     } while (selected != 0)
 }
