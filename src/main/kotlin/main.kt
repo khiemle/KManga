@@ -1,5 +1,7 @@
 import core.MangaHelper
 import core.pdf
+import models.StorySelector
+import utils.getStorySelectors
 
 fun main() {
     println(pdf.toString())
@@ -12,20 +14,16 @@ fun main() {
 
     var selected: Int? = 0
     do {
-        println("0 - Exit")
-        println("1 - ${KimetsuNoYaibaSelector.storyName}")
-        println("2 - ${DragonballSelector.storyName}")
-        selected = readLine()?.toIntOrNull() ?: 0
+        val lstStorySelector = getStorySelectors("ham_truyen_tranh_net.json")
+        selected = menuV2(lstStorySelector)
         if (selected == 0) continue
         print("From chapter index = ")
         val from = readLine()?.toIntOrNull() ?: continue
         print("How many chapter = ")
         val limit = readLine()?.toIntOrNull() ?: continue
-        val selector = when (selected) {
-            1 -> KimetsuNoYaibaSelector
-            2 -> DragonballSelector
-            else -> null
-        }
+        val selector = if (selected > 0 && selected <= lstStorySelector.size)
+            lstStorySelector[selected-1]
+        else null
         selector ?: continue
         MangaHelper.getStory(
             selector = selector,
@@ -34,4 +32,19 @@ fun main() {
             limit = limit
         )
     } while (selected != 0)
+}
+
+private fun menuV1(): Int {
+    println("0 - Exit")
+    println("1 - ${KimetsuNoYaibaSelector.storyName}")
+    println("2 - ${DragonballSelector.storyName}")
+    return readLine()?.toIntOrNull() ?: 0
+}
+
+private fun menuV2(lstStorySelector: List<StorySelector>): Int {
+    println("0 - Exit")
+    lstStorySelector.forEachIndexed { index, storySelector ->
+        println("${index + 1} - ${storySelector.storyName}")
+    }
+    return readLine()?.toIntOrNull() ?: 0
 }

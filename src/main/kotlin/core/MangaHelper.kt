@@ -1,6 +1,6 @@
 package core
 
-import StorySelector
+import models.StorySelector
 import org.jsoup.Jsoup
 import utils.downloadImage
 import java.io.File
@@ -84,6 +84,10 @@ class MangaHelper {
                 val dstFile = "${chapterDir}/${getFileNameFromPath(url)}"
                 if (!skipDownload) {
                     downloadImage(path = url, dstFile = dstFile)
+                }
+                println(url)
+                if (url.startsWith(HamTruyenTranhNetConstants.HOST_URL).not()) {
+                    return@map "${HamTruyenTranhNetConstants.HOST_URL}/$url"
                 }
                 url
             }

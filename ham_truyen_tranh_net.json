@@ -1,0 +1,30 @@
+[
+  {
+    "story_path": "http://www.hamtruyentranh.net/truyen/kimetsu-no-yaiba-1221.html",
+    "story_name": "kimetsu-no-yaiba-1221",
+    "chapter_list_pages": "div.each-page div.page-chapter  img",
+    "chapter_list_pages_back_up": "div.each-page img",
+    "story_list_chapters": "div.content p a"
+  },
+  {
+    "story_path": "http://www.hamtruyentranh.net/truyen/7-vien-ngoc-rong-268.html",
+    "story_name": "7-vien-ngoc-rong-268",
+    "chapter_list_pages": "div.each-page img",
+    "chapter_list_pages_back_up": "div.each-page div.page-chapter  img",
+    "story_list_chapters": "div.content p a"
+  },
+  {
+    "story_path": "http://www.hamtruyentranh.net/truyen/dau-an-rong-thieng-906.html",
+    "story_name": "dau-an-rong-thieng-906",
+    "chapter_list_pages": "div.each-page div.page-chapter  img",
+    "chapter_list_pages_back_up": "div.each-page img",
+    "story_list_chapters": "div.content p a"
+  },
+  {
+    "story_path": "http://www.hamtruyentranh.net/truyen/shin-cau-be-but-chi-858.html",
+    "story_name": "shin-cau-be-but-chi-858",
+    "chapter_list_pages": "div.each-page div.page-chapter p img",
+    "chapter_list_pages_back_up": "div.each-page p img",
+    "story_list_chapters": "div.content p a"
+  }
+]
