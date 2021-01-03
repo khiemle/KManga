@@ -3,23 +3,23 @@
 
 Đọc truyện tranh trên Kindle Paper White tại sao không?
 
-#### Using library
+#### Thư viện
 
-To parse HTML - https://jsoup.org/
+Đọc rendered HTML - https://jsoup.org/
 
-To generate PDF - https://github.com/jasoet/fun-pdf 
+Tạo file PDF - https://github.com/jasoet/fun-pdf 
 
 
-#### Find manga on 
+#### Hiện tại chỉ hỗ trợ
 
 http://www.hamtruyentranh.net/
 
-#### Must run before start application
+#### Cần cài wkhtmltopdf
 ```
 brew install wkhtmltopdf --cask
 ```
 
-#### Json Template Selector
+#### Json mẫu để thêm truyện vào menu
 
 ```
 {
