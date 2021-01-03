@@ -86,7 +86,7 @@ class MangaHelper {
                     downloadImage(path = url, dstFile = dstFile)
                 }
                 println(url)
-                if (url.startsWith(HamTruyenTranhNetConstants.HOST_URL).not()) {
+                if (url.startsWith("http").not()) {
                     return@map "${HamTruyenTranhNetConstants.HOST_URL}/$url"
                 }
                 url
